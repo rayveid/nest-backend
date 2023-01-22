@@ -1,5 +1,5 @@
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ConfigModule } from '@nestjs/config';
 import { SequelizeModule } from '@nestjs/sequelize';
 import { UsersModule } from './users/users.module';
 
@@ -15,7 +15,7 @@ import { UsersModule } from './users/users.module';
       host: process.env.POSTGRES_HOST,
       port: Number(process.env.POSTGRES_PORT), // порт postgres по-умолчанию
       username: process.env.POSTGRES_USER, // пользователь по умолчанию
-      password: String(process.env.POSTGRES_PASSWORD),
+      password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB, // название db
       models: [],
       autoLoadModels: true, // автоматическое создание таблиц на основе переданных моделей
