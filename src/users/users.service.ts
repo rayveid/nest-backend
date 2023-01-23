@@ -15,11 +15,19 @@ export class UsersService {
     const user = await this.usersRepository.create(dto); // создаем пользователя
     const role = await this.roleService.getByValue('user'); // получаем роль из БД
     await user.$set('roles', [role.id]); // перезаписываем поле roles в БД
+    user.roles = [role];
     return user;
   }
 
   async getAll() {
     // получаем все поля пользователя
     return await this.usersRepository.findAll({ include: { all: true } });
+  }
+
+  async getByEmail(email: string) {
+    return await this.usersRepository.findOne({
+      where: { email },
+      include: { all: true },
+    });
   }
 }
