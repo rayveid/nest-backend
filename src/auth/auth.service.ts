@@ -1,4 +1,9 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import {
+  HttpException,
+  HttpStatus,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { CreateUserDto } from 'src/users/dto/create-user.dto';
 import { UsersService } from 'src/users/users.service';
@@ -12,7 +17,20 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async login(dto: CreateUserDto) {}
+  async login(dto: CreateUserDto) {
+    const user = await this.validateUser(dto);
+    return this.generateToken(user);
+  }
+
+  private async validateUser(dto: CreateUserDto) {
+    const user = await this.userService.getByEmail(dto.email);
+    // сравниваем пароль из DTO и хэш из БД
+    const passEquals = await bcrypt.compare(dto.password, user.password);
+    if (user && passEquals) {
+      return user;
+    }
+    throw new UnauthorizedException({ message: 'Wrong password or email' });
+  }
 
   async register(dto: CreateUserDto) {
     const candidate = await this.userService.getByEmail(dto.email);
@@ -33,7 +51,7 @@ export class AuthService {
     return this.generateToken(user); // возвращаем сгенерированный токен
   }
 
-  generateToken(user: User) {
+  private generateToken(user: User) {
     const payload = {
       email: user.email,
       password: user.password,
