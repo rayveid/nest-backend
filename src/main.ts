@@ -12,7 +12,6 @@ async function start() {
     .setTitle('Nest Backend')
     .setDescription('Test REST API documentation for Nest Backend Up')
     .setVersion('1.0.0')
-    .addTag('Ray Veid')
     .build(); // в конце собираем конфиг
 
   // создаем саму документацию

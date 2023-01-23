@@ -30,8 +30,6 @@ export class Role extends Model<Role, RoleCreationAttrs> {
   @ApiProperty({ example: 'admin', description: 'Unique role name' })
   @Column({
     type: DataType.STRING,
-    allowNull: false,
-    unique: true,
   })
   value: string; // поля таблицы
 
@@ -41,7 +39,6 @@ export class Role extends Model<Role, RoleCreationAttrs> {
   })
   @Column({
     type: DataType.STRING,
-    allowNull: false,
   })
   description: string;
 
