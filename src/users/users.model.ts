@@ -1,5 +1,13 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { Column, DataType, Model, Table } from 'sequelize-typescript';
+import {
+  BelongsToMany,
+  Column,
+  DataType,
+  Model,
+  Table,
+} from 'sequelize-typescript';
+import { UserRoles } from 'src/m2m/user-roles';
+import { Role } from 'src/roles/roles.model';
 
 // аттрибуты, необходимые для создания пользователя
 interface UserCreationAttrs {
@@ -50,4 +58,8 @@ export class User extends Model<User, UserCreationAttrs> {
     allowNull: true,
   })
   banReason: string;
+
+  // помечаем, что Роль связана с User как m2m через таблицу UserRoles
+  @BelongsToMany(() => Role, () => UserRoles)
+  roles: Role[]; // у каждой роли мб много пользователей
 }

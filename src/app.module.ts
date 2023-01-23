@@ -5,6 +5,7 @@ import { User } from './users/users.model';
 import { UsersModule } from './users/users.module';
 import { RolesModule } from './roles/roles.module';
 import { Role } from './roles/roles.model';
+import { UserRoles } from './m2m/user-roles';
 
 @Module({
   controllers: [],
@@ -20,7 +21,7 @@ import { Role } from './roles/roles.model';
       username: process.env.POSTGRES_USER, // пользователь по умолчанию
       password: process.env.POSTGRES_PASSWORD,
       database: process.env.POSTGRES_DB, // название db
-      models: [User, Role], // добавляем импорт моделей
+      models: [User, Role, UserRoles], // добавляем импорт моделей
       autoLoadModels: true, // автоматическое создание таблиц на основе переданных моделей
     }),
     UsersModule,
