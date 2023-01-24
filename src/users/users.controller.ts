@@ -5,6 +5,8 @@ import { User } from './users.model';
 import { UsersService } from './users.service';
 import { Roles } from '../auth/roles-auth.decorator';
 import { RolesGuard } from '../auth/roles.guard';
+import AddRoleDto from './dto/add-role.dto';
+import { BanUserDto } from './dto/ban-user.dto';
 
 @ApiTags('Users')
 @Controller('/users')
@@ -29,11 +31,20 @@ export class UsersController {
   }
 
   @ApiOperation({ summary: 'Grant role' })
-  @ApiResponse({ status: 200, type: [User] })
+  @ApiResponse({ status: 200 })
   @Roles('admin') // гард для проверки авторизации под ролью админ
   @UseGuards(RolesGuard)
-  @Get('/getAll')
-  async grantRole() {
-    return await this.usersService.getAll();
+  @Post('/addRole')
+  async addRole(@Body() dto: AddRoleDto) {
+    return await this.usersService.addRole(dto);
+  }
+
+  @ApiOperation({ summary: 'Ban user' })
+  @ApiResponse({ status: 200 })
+  @Roles('admin') // гард для проверки авторизации под ролью админ
+  @UseGuards(RolesGuard)
+  @Post('/ban')
+  async ban(@Body() dto: BanUserDto) {
+    return await this.usersService.ban(dto);
   }
 }
