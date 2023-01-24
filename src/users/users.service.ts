@@ -13,7 +13,7 @@ export class UsersService {
 
   async create(dto: CreateUserDto) {
     const user = await this.usersRepository.create(dto); // создаем пользователя
-    const role = await this.roleService.getByValue('user'); // получаем роль из БД
+    const role = await this.roleService.getByValue('admin'); // получаем роль из БД
     await user.$set('roles', [role.id]); // перезаписываем поле roles в БД
     user.roles = [role];
     return user;
