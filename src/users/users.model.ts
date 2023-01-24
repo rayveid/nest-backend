@@ -3,11 +3,13 @@ import {
   BelongsToMany,
   Column,
   DataType,
+  HasMany,
   Model,
   Table,
 } from 'sequelize-typescript';
 import { UserRoles } from 'src/m2m/user-roles';
 import { Role } from 'src/roles/roles.model';
+import { Post } from '../posts/post.model';
 
 // аттрибуты, необходимые для создания пользователя
 interface UserCreationAttrs {
@@ -62,4 +64,7 @@ export class User extends Model<User, UserCreationAttrs> {
   // помечаем, что Роль связана с User как m2m через таблицу UserRoles
   @BelongsToMany(() => Role, () => UserRoles)
   roles: Role[]; // у каждой роли мб много пользователей
+
+  @HasMany(() => Post)
+  posts: Post[];
 }
